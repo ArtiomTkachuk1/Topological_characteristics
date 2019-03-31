@@ -222,7 +222,11 @@ class MyGraph{
 			tmp="&infin;";
 		s=s+tmp+endstr;
 		s=s+endstr;
-		s=s+"Ступінь центрацізації(&sigma;)="+this.sigma.toFixed(1)+endstr;
+		s=s+"Ступінь центрацізації(&sigma;)=";
+		var tmp=this.sigma.toFixed(1);
+		if(isNaN(tmp)==true)
+			tmp="Невизначеність";
+		s=s+tmp+endstr;
 		s=s+endstr;
 		return s;
 	}

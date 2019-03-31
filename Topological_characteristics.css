@@ -81,7 +81,6 @@ body,html{
 	align:center;
 	margin:auto;
 	font-size:400%;
-	background-color:red;
 	box-sizing: border-box;
 	border-width: 1px;
 	border-style: solid;
@@ -89,8 +88,11 @@ body,html{
 	display: flex;
 	justify-content: center;
 }
+.endbutton{
+	background-color:#FF9999;
+}
 #outfile{
-	background-color:MediumTurquoise;
+	background-color:#B2B0C6;
 }
 #link{
 	display: none;
