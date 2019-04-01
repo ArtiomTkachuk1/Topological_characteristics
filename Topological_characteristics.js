@@ -33,20 +33,20 @@ function createNDimArray(dimensions) {
 var gr;
 class MyGraph{
 	constructor(n) {
-		this.n=n;//количество вершин
-		this.adjacency=create2DimArray([this.n,this.n]);//матрица смежности
-		this.distance=create2DimArray([this.n,this.n]);//матрица расстояний
-		this.сonnection=create2DimArray([this.n,this.n]);//матрица связности
+		this.n=n;//Количество вершин
+		this.adjacency=create2DimArray([this.n,this.n]);//Матрица смежности
+		this.distance=create2DimArray([this.n,this.n]);//Матрица расстояний
+		this.сonnection=create2DimArray([this.n,this.n]);//Матрица связности
 		for(var i=0;i<n;i++)
 			for(var j=0;j<n;j++){
 				this.adjacency[i][j]=0;
 				this.distance[i][j]=0;
 				this.сonnection[i][j]=0;
 			}
-		this.redundancy=0;//избыточность
-		this.redundancy2=0;//Недоиспользованные возможности
-		this.compactness=0;//компактность
-		this.Q=0;
+		this.redundancy=0;//Избыточность
+		this.redundancy2=0;//Отклонение заданного распределения вершин от равномерного
+		this.Q=0;//Абсолютная компактность
+		this.compactness=0;//Относительаня компактность
 		this.d=0;//Диаметр системы
 		this.sigma=0;//Степень центрацизации
 	}
@@ -173,7 +173,7 @@ class MyGraph{
 		this.calc_sigma();
 	}
 	print_html(){
-		var endstr="<br>"
+		var endstr="<br>";
 		var s="Кількість вершин="+this.n+endstr;
 		s=s+endstr;
 		s=s+"Матриця суміжності:"+endstr;
@@ -184,7 +184,7 @@ class MyGraph{
 				else s=s+endstr;
 			}
 		s=s+endstr;
-		s=s+"Матриця відстанєй:"+endstr;
+		s=s+"Матриця відстаней:"+endstr;
 		for(var i=0;i<this.n;i++)
 			for(var j=0;j<this.n;j++){
 				var tmp=this.distance[i][j];
@@ -203,30 +203,40 @@ class MyGraph{
 				else s=s+endstr;
 			}
 		s=s+endstr;
-		s=s+"Надлишковість структури(R)="+this.redundancy+endstr;
-		s=s+endstr;
-		s=s+"Квадратне відхилення заднного розподілу вершин від рівномірного(&epsilon;<sup>2</sup>)="+this.redundancy2.toFixed(1)+endstr;
-		s=s+endstr;
-		s=s+"Компактність структури(Q<sub>відн</sub>)=";
-		var tmp=this.compactness;
-		if(isFinite(tmp)==false)
-			tmp="&infin;";
-		else{
-			tmp=tmp.toFixed(1)
+		var numprinted=6;
+		var printed=new Array(numprinted);
+		printed[0]=this.redundancy;
+		printed[1]=this.redundancy2;
+		printed[2]=this.Q;
+		printed[3]=this.compactness;
+		printed[4]=this.d;
+		printed[5]=this.sigma;
+		for(var i=0;i<numprinted;i++){
+		  if(isFinite(printed[i])==false)printed[i]="=&infin;";
+		  else{
+			if(isNaN(printed[i])==true)printed[i]="=Невизначеність";
+			else{
+			  var tmp=Number(printed[i].toFixed(3));
+			  if(Math.abs(printed[i]-tmp)>0.0001){
+				printed[i]="&asymp;"+tmp;
+			  }
+			  else{
+				printed[i]="="+tmp;
+			  }
+			}
+		  }
 		}
-		s=s+tmp+endstr;
+		s=s+"Надлишковість структури(R)"+printed[0]+endstr;
 		s=s+endstr;
-		s=s+"Діаметр структури(d)=";
-		var tmp=this.d;
-		if(isFinite(tmp)==false)
-			tmp="&infin;";
-		s=s+tmp+endstr;
+		s=s+"Квадратне відхилення заданого розподілу вершин від рівномірного(&epsilon;<sup>2</sup>)"+printed[1]+endstr;
 		s=s+endstr;
-		s=s+"Ступінь центрацізації(&sigma;)=";
-		var tmp=this.sigma.toFixed(1);
-		if(isNaN(tmp)==true)
-			tmp="Невизначеність";
-		s=s+tmp+endstr;
+		s=s+"Абсолютна компактність структури(Q)"+printed[2]+endstr;
+		s=s+endstr;
+		s=s+"Відносна компактність структури(Q<sub>відн</sub>)"+printed[3]+endstr;
+		s=s+endstr;
+		s=s+"Діаметр структури(d)"+printed[4]+endstr;
+		s=s+endstr;
+		s=s+"Ступінь центрацізації(&sigma;)"+printed[5]+endstr;
 		s=s+endstr;
 		return s;
 	}
@@ -389,6 +399,11 @@ function drawtable(maindiv){
 				}
 			}
 		}
+    if(n>9){
+      var adjacencydiv=document.getElementById("adjacencymatrdiv");
+  		adjacencydiv.style.fontSize="50%";
+      if(n>20)adjacencydiv.style.fontSize="30%";
+    }
 		prev_n=n;
 		var endbutton=document.createElement("button");
 		endbutton.className="endbutton";
@@ -566,15 +581,12 @@ function create(id){
 	maindiv.style.width=window.innerWidth;
 	maindiv.style.height=window.innerHeight;
 	drawmainbuttons(maindiv);
-	//GUI_load_from_matrix(maindiv);
 }
 
 
 create("root");
 
 
-/*
-TO DO
+/*TO DO
 1. красивый fileinput
-2. рисовать графы
-*/
+2. рисовать графы*/
