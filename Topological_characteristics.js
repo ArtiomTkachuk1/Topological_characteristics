@@ -284,7 +284,7 @@ function makeTextFile(text){
 
 
 function save(){
-    var link1 = document.getElementById('link');
+  var link1 = document.getElementById('link');
 	link1.innerHTML="Завантажити";
 	var lasts=gr.n+"\r\n";
 	for(var i=0;i<gr.n;i++)
@@ -293,7 +293,6 @@ function save(){
 			if(j!=(gr.n-1))lasts=lasts+" ";
 			else lasts=lasts+"\r\n";
 		}
-	console.log(lasts);
 	link1.href = makeTextFile(lasts);
 	var evt = document.createEvent("MouseEvents");
  	evt.initMouseEvent("click", true, true, window,0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -399,10 +398,11 @@ function drawtable(maindiv){
 				}
 			}
 		}
-    if(n>9){
+    if(n>5){
       var adjacencydiv=document.getElementById("adjacencymatrdiv");
-  		adjacencydiv.style.fontSize="50%";
-      if(n>20)adjacencydiv.style.fontSize="30%";
+  		adjacencydiv.style.fontSize="75%";
+      if(n>9)adjacencydiv.style.fontSize="50%";
+      if(n>20)adjacencydiv.style.fontSize="25%";
     }
 		prev_n=n;
 		var endbutton=document.createElement("button");
@@ -467,6 +467,7 @@ function handleFileSelect(evt) {
     reader.onload = function (e){
 			var words=[];
 			words = reader.result.split('\n');
+      if(words[words.length-1]=="")words.pop();
 			var erdiv=document.getElementById("file_errordiv");
 			if(words.length==0){
 				erdiv.innerHTML=errormessages[1];
@@ -538,7 +539,7 @@ function GUI_load_from_file(maindiv){
 	finput.type="file";
 	finput.className="file_input_text mdl-textfield__input";
 	maindiv.appendChild(finput);
-	finput.addEventListener("change", handleFileSelect)
+	finput.addEventListener("change",handleFileSelect)
 	var errordiv=document.createElement("div");
 	errordiv.className="errordiv";
 	errordiv.id="file_errordiv";
