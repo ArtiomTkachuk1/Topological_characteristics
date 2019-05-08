@@ -33,35 +33,35 @@ function createNDimArray(dimensions) {
 var gr;
 class MyGraph{
 	constructor(n) {
-		this.n=n;//Количество вершин
-		this.adjacency=create2DimArray([this.n,this.n]);//Матрица смежности
-		this.distance=create2DimArray([this.n,this.n]);//Матрица расстояний
-		this.сonnection=create2DimArray([this.n,this.n]);//Матрица связности
+		this.n=n;//Кількість вершин
+		this.adjacency=create2DimArray([this.n,this.n]);//Матриця суміжності
+		this.distance=create2DimArray([this.n,this.n]);//Матриця відстаней
+		this.сonnection=create2DimArray([this.n,this.n]);//Матриця зв'язності
 		for(var i=0;i<n;i++)
 			for(var j=0;j<n;j++){
 				this.adjacency[i][j]=0;
 				this.distance[i][j]=0;
 				this.сonnection[i][j]=0;
 			}
-		this.redundancy=0;//Избыточность
-		this.redundancy2=0;//Отклонение заданного распределения вершин от равномерного
-		this.Q=0;//Абсолютная компактность
-		this.compactness=0;//Относительаня компактность
-		this.d=0;//Диаметр системы
-		this.sigma=0;//Степень центрацизации
+		this.redundancy=0;//Збитковість
+		this.redundancy2=0;//Квадратне відхилення заданого розподілу вершин від рівномірного 
+		this.Q=0;//Абсолютна компактність
+		this.compactness=0;//Відносна компактність
+		this.d=0;//Діаметр системи
+		this.sigma=0;//Ступінь централізації
 	}
 	calc_сonnection(){
 		if (this.n > 0){
-				var Ak=createNDimArray([this.n,this.n,this.n]);
+			var Ak=createNDimArray([this.n,this.n,this.n]);
+			for (var i = 0; i < this.n; i++)
+				for (var j = 0; j < this.n; j++)
+					Ak[0][i][j] = this.adjacency[i][j];
+			for (var k = 1; k < this.n; k++){
 				for (var i = 0; i < this.n; i++)
-            for (var j = 0; j < this.n; j++)
-                Ak[0][i][j] = this.adjacency[i][j];
-        for (var k = 1; k < this.n; k++){
-            for (var i = 0; i < this.n; i++)
-                for (var j = 0; j < this.n; j++){
-                    Ak[k][i][j] = 0;
-                    for (var m = 0; m < this.n; m++)
-                        Ak[k][i][j] += Ak[k - 1][i][m]*this.adjacency[m][j];
+					for (var j = 0; j < this.n; j++){
+						Ak[k][i][j] = 0;
+						for (var m = 0; m < this.n; m++)
+							Ak[k][i][j] += Ak[k - 1][i][m]*this.adjacency[m][j];
                 }
         }
         for (var i = 0; i < this.n; i++)
@@ -76,7 +76,7 @@ class MyGraph{
         for (var i = 0; i < this.n; i++)
             for (var j = 0; j < this.n; j++)
                 if (this.сonnection[i][j] >= 1)this.сonnection[i][j]=1;
-    }
+		}
 	}
 	calc_redundadncy(){
 		var R=0;
@@ -92,13 +92,13 @@ class MyGraph{
 			for(var j=i+1;j<this.n;j++)
 				if(this.adjacency[i][j]==1)edgecount=edgecount+1;
 		var e2 = 0;
-    for (var i = 0; i < this.n; i++){
-        var degreeV = 0;
-        for (var j = 0; j < this.n; j++)
-            degreeV += this.adjacency[i][j];
-        e2 += degreeV * degreeV;
-    }
-    e2 -=(4*edgecount*edgecount)/this.n;
+		for (var i = 0; i < this.n; i++){
+			var degreeV = 0;
+			for (var j = 0; j < this.n; j++)
+				degreeV += this.adjacency[i][j];
+			e2 += degreeV * degreeV;
+		}
+		e2 -=(4*edgecount*edgecount)/this.n;
 		this.redundancy2=e2;
 	}
 	calc_compactness(){
@@ -112,7 +112,6 @@ class MyGraph{
 		var Qrel=(Q/Qmin)-1;
 		this.compactness=Qrel;
 	}
-
 	calc_distancematr(){
       var size = this.n;
       for (var i = 0; i < size; i += 1) {
