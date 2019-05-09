@@ -2,32 +2,33 @@
 
 
 if ( ! (window.File && window.FileReader && window.FileList && window.Blob)) {
-  alert('The File APIs are not fully supported in this browser.');
+	alert('The File APIs are not fully supported in this browser.');
 }
 
 
 function createNDimArray(dimensions) {
-    if (dimensions.length > 0) {
-        var dim = dimensions[0];
-        var rest = dimensions.slice(1);
-        var newArray = new Array(dim);
-        for (var i = 0; i < dim; i++) {
-            newArray[i] = createNDimArray(rest);
-        }
-        return newArray;
-     } else {
-        return undefined;
-     }
- }
+	if (dimensions.length > 0) {
+		var dim = dimensions[0];
+		var rest = dimensions.slice(1);
+		var newArray = new Array(dim);
+		for (var i = 0; i < dim; i++) {
+			newArray[i] = createNDimArray(rest);
+		}
+		return newArray;
+	}
+	else {
+		return undefined;
+	}
+}
 
 
- function create2DimArray(dimensions) {
-	 var newArray = new Array(dimensions[0]);
-	 for (var i = 0; i < dimensions[0]; i++) {
-			 newArray[i] = new Array(dimensions[1]);
-	 }
-	 return newArray;
-  }
+function create2DimArray(dimensions) {
+	var newArray = new Array(dimensions[0]);
+	for (var i = 0; i < dimensions[0]; i++) {
+		newArray[i] = new Array(dimensions[1]);
+	}
+	return newArray;
+}
 
 
 var gr;
@@ -44,7 +45,7 @@ class MyGraph{
 				this.сonnection[i][j]=0;
 			}
 		this.redundancy=0;//Збитковість
-		this.redundancy2=0;//Квадратне відхилення заданого розподілу вершин від рівномірного 
+		this.redundancy2=0;//Квадратне відхилення заданого розподілу вершин від рівномірного
 		this.Q=0;//Абсолютна компактність
 		this.compactness=0;//Відносна компактність
 		this.d=0;//Діаметр системи
@@ -62,20 +63,19 @@ class MyGraph{
 						Ak[k][i][j] = 0;
 						for (var m = 0; m < this.n; m++)
 							Ak[k][i][j] += Ak[k - 1][i][m]*this.adjacency[m][j];
-                }
-        }
-        for (var i = 0; i < this.n; i++)
-            for (var j = 0; j < this.n; j++)
-                this.сonnection[i][j] = 0;
-        for (var k = 0; k < this.n; k++){
-            for (var i = 0; i < this.n; i++)
-                for (var j = 0; j < this.n; j++)
-                    this.сonnection[i][j] += Ak[k][i][j];
-        }
-
-        for (var i = 0; i < this.n; i++)
-            for (var j = 0; j < this.n; j++)
-                if (this.сonnection[i][j] >= 1)this.сonnection[i][j]=1;
+					}
+			}
+			for (var i = 0; i < this.n; i++)
+				for (var j = 0; j < this.n; j++)
+					this.сonnection[i][j] = 0;
+			for (var k = 0; k < this.n; k++){
+				for (var i = 0; i < this.n; i++)
+					for (var j = 0; j < this.n; j++)
+						this.сonnection[i][j] += Ak[k][i][j];
+			}
+			for (var i = 0; i < this.n; i++)
+				for (var j = 0; j < this.n; j++)
+					if (this.сonnection[i][j] >= 1)this.сonnection[i][j]=1;
 		}
 	}
 	calc_redundadncy(){
@@ -225,17 +225,17 @@ class MyGraph{
 			}
 		  }
 		}
-		s=s+"Надлишковість структури(R)"+printed[0]+endstr;
+		s=s+"Надлишковість структури (R)"+printed[0]+endstr;
 		s=s+endstr;
-		s=s+"Квадратне відхилення заданого розподілу вершин від рівномірного(&epsilon;<sup>2</sup>)"+printed[1]+endstr;
+		s=s+"Нерівномірність розподілу зв'язків (&epsilon;<sup>2</sup>)"+printed[1]+endstr;
 		s=s+endstr;
-		s=s+"Абсолютна компактність структури(Q)"+printed[2]+endstr;
+		s=s+"Абсолютна компактність структури (Q)"+printed[2]+endstr;
 		s=s+endstr;
-		s=s+"Відносна компактність структури(Q<sub>відн</sub>)"+printed[3]+endstr;
+		s=s+"Відносна компактність структури (Q<sub>відн</sub>)"+printed[3]+endstr;
 		s=s+endstr;
-		s=s+"Діаметр структури(d)"+printed[4]+endstr;
+		s=s+"Діаметр структури (d)"+printed[4]+endstr;
 		s=s+endstr;
-		s=s+"Ступінь центрацізації(&sigma;)"+printed[5]+endstr;
+		s=s+"Ступінь центрацізації (&sigma;)"+printed[5]+endstr;
 		s=s+endstr;
 		return s;
 	}
@@ -250,15 +250,16 @@ errormessages[1]="Файл не коректний";
 var messages=[];
 messages[0]="Введіть кількість вершин";
 messages[1]="Введіть матрицю суміжності"
-messages[2]="Оберіть спосіб вводу структури";
+messages[2]="Оберіть спосіб введеня структури";
 
 
 var buttonnames=[];
 buttonnames[0]="Готово";
-buttonnames[1]="Ввести матрицю суміжності структури вручну";
+buttonnames[1]="Ввести матрицю суміжності структури з клавіатури";
 buttonnames[2]="Завантажити матрицю суміжності структури з файла";
 buttonnames[3]="Намалювати структуру";
 buttonnames[4]="Зберегти матрицю суміжності графа у файл";
+buttonnames[5]="Завантажити файл";
 
 
 function drawans(maindiv){
@@ -274,11 +275,11 @@ function drawans(maindiv){
 var textFile = null;
 function makeTextFile(text){
 	var data = new Blob([text], {type: 'text/plain'});
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-    }
-    textFile = window.URL.createObjectURL(data);
-    return textFile;
+	if (textFile !== null) {
+		window.URL.revokeObjectURL(textFile);
+	}
+	textFile = window.URL.createObjectURL(data);
+	return textFile;
 }
 
 
@@ -522,7 +523,7 @@ function GUI_load_from_file(maindiv){
 	var textdiv=document.createElement("div");
 	textdiv.className="textdiv";
 	var s="<strong>Формат файлу:</strong>"+"<br>";
-	s=s+"Кільксть вершин"+"<br>";
+	s=s+"Кількість вершин"+"<br>";
 	s=s+"Матриця суміжності"+"<br>"+"<br>";
 	s=s+"<strong>Приклад файлу:</strong>"+"<br>";
 	s=s+"5"+"<br>";
@@ -533,11 +534,17 @@ function GUI_load_from_file(maindiv){
 	s=s+"0 1 0 1 0"+"<br>"+"<br>";
 	textdiv.innerHTML=s;
 	maindiv.appendChild(textdiv);
-	var finput=document.createElement("input");
+	maindiv.innerHTML=maindiv.innerHTML+
+	"<div class="+"upload-btn-wrapper"+">"+
+		"<button class="+"btn>"+buttonnames[5]+"</button>"+
+		"<input type="+"file "+"id="+"finput "+"name=file />"+
+	"</div>"
+	/*var finput=document.createElement("input");
 	finput.id="fileinput";
 	finput.type="file";
 	finput.className="file_input_text mdl-textfield__input";
-	maindiv.appendChild(finput);
+	maindiv.appendChild(finput);*/
+	var finput=document.getElementById("finput");
 	finput.addEventListener("change",handleFileSelect)
 	var errordiv=document.createElement("div");
 	errordiv.className="errordiv";
@@ -588,5 +595,4 @@ create("root");
 
 
 /*TO DO
-1. красивый fileinput
-2. рисовать графы*/
+1. рисовать графы*/
